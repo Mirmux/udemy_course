@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, mixins, viewsets
 from mainapp.models import Product
+# from .producer import publish
 from .serializers import *
 import requests
 
@@ -25,13 +26,18 @@ class ProductView(generics.ListAPIView, mixins.RetrieveModelMixin, mixins.Create
     """ We have to use this method for mixins.CreateModelMixin because this mixin does not work 
     without post(create) method """
 
+    # publish()
+
+    info = requests.get('http://127.0.0.1:5000/api/category/').json()
+    for data in info:
+        print(data.get('name'))
+
 
     @staticmethod
     def post(request, *args, **kwargs):
         """ we took date from other project """
         payload = {'id':'name'}
-        info = requests.get('http://127.0.0.1:5000/api/category/').json()
-        print(info[0].get('name'))
+
 
         title = request.POST.getlist('title')
         description = request.POST.getlist('description')

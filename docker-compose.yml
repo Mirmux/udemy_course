@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+  category:
+    build:
+      context: .
+    ports:
+    - 8001:8000
+    volumes:
+    - . :/app
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=flowers-garden
+      - DB_USER=postgres
+      - DB_PASS=1611mm
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1611mm
+      - POSTGRES_DB=flowers-garden
+    ports:
+    - 5432:5432
+
+
+#  pgadmin:
+#    container_name: pgadmin4_container
+#    image: dpage/pgadmin4
+#    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: mirmux5@gmail.com
+#      PGADMIN_DEFAULT_PASSWORD: 1611mm
+#    ports:
+#      - "5050:80"

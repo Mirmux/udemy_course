@@ -36,8 +36,24 @@ class XmlModel(ModelBase):
 
 
 class Category(models.Model):
+    """ This ForeignKey for CategoryTree """
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', blank=True, null=True)
-    name = models.CharField(max_length=200)
+
+    name = models.CharField(max_length=500, verbose_name='name')
+    description = models.TextField(blank=True)
+    status = models.IntegerField(default=1)
+
+    """ Media Upload """
+    photo = models.ImageField(upload_to='category', default='category/1.jpg', blank=True, null=True)
+
+    """ Created and Updated time """
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
+
+
+    class Meta:
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
