@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, mixins, viewsets
-from mainapp.models import Product
+from mainapp.models import *
 # from .producer import publish
 from .serializers import *
 import requests
@@ -28,9 +28,9 @@ class ProductView(generics.ListAPIView, mixins.RetrieveModelMixin, mixins.Create
 
     # publish()
 
-    info = requests.get('http://127.0.0.1:5000/api/category/').json()
-    for data in info:
-        print(data.get('name'))
+    # info = requests.get('http://127.0.0.1:5000/api/category/').json()
+    # for data in info:
+    #     print(data.get('name'))
 
 
     @staticmethod
@@ -139,3 +139,18 @@ class ProductCRUDLView(generics.ListAPIView,
         if id is not None:
             return self.destroy(request, *args, **kwargs)
         return super().destroy(request, *args, **kwargs)
+
+
+class CategoryViewAPI(viewsets.GenericViewSet,
+                      mixins.ListModelMixin,
+                      mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin):
+
+    """ It is class for Admin who can see all category as list, can Create category, Retrieve category,
+     Update category, Destroy category """
+
+    queryset = Category.objects.order_by('id')
+    serializer_class = CategorySerializer
+

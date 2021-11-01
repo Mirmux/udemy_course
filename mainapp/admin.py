@@ -13,4 +13,4 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     ordering = ['id']
-    list_display = ['name', 'parent']
+    list_display = ['id', 'name', 'parent', 'parent_id', 'status']
